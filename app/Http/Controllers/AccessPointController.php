@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccessModel;
 use App\Models\AccessPoint;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 
 class AccessPointController extends Controller
@@ -11,8 +13,8 @@ class AccessPointController extends Controller
     public function index($id)
     {
         //
-        $access_model = AcesssModel::find($id);
-        $access_point = AcesssPoint::where('access_model_id', $id)->get();
+        $access_model = AccessModel::find($id);
+        $access_point = AccessPoint::where('access_model_id', $id)->get();
 
         return view('layouts.auth.accessPoint')
         ->with('access_model', $access_model)
@@ -28,25 +30,25 @@ class AccessPointController extends Controller
         ) { // create
 
             $this->validate($request, [
-                'display_name' => 'unique:acesss_points,display_name',
-                'value' => 'unique:acesss_points,value'
+                'display_name' => 'unique:access_points,display_name',
+                'value' => 'unique:access_points,value'
             ]);
 
-            $acesssPoint = new AcesssPoint();
+            $accessPoint = new AccessPoint();
         } else { // update
             $this->validate($request, [
-                'display_name' => 'unique:acesss_points,display_name,' . $id,
-                'value' => 'unique:acesss_points,value,' . $id
+                'display_name' => 'unique:access_points,display_name,' . $id,
+                'value' => 'unique:access_points,value,' . $id
             ]);
 
-            $acesssPoint = AcesssPoint::find($id);
+            $accessPoint = AccessPoint::find($id);
         }
 
         try {
-            $acesssPoint->display_name = $request->input('display_name');
-            $acesssPoint->value = $request->input('value');
-            $acesssPoint->access_model_id = $request->input('access_model_id');
-            $acesssPoint->save();
+            $accessPoint->display_name = $request->input('display_name');
+            $accessPoint->value = $request->input('value');
+            $accessPoint->access_model_id = $request->input('access_model_id');
+            $accessPoint->save();
 
             return redirect()->route('access_point.index', ['id' => $request->input('access_model_id')])->with('success', 'Accsess Point Added Sucessfully');
         } catch (\Throwable $th) {
@@ -58,7 +60,7 @@ class AccessPointController extends Controller
     {
         //
         // $a = false;
-        // $data = acesssPoint::find($request->input('delete_id'));
+        // $data = accessPoint::find($request->input('delete_id'));
         // $data->delete();
         // $a = app('App\Http\Controllers\ActivityLogController')->index("Remove Access Point");
         // if ($a == true) {

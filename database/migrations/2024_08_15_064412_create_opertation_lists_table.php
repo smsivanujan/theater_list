@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('opertation_lists', function (Blueprint $table) {
             $table->id();
-            $table->string('serial_number')->unique();
+            $table->string('category')->unique();
             $table->string('patient_id')->nullable();
             $table->foreignId('surgery_id')->constrained('surgery_types');
             $table->longText('diagnosis')->nullable();

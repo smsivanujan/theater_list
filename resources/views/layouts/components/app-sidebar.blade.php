@@ -28,11 +28,11 @@
                                 </a>
                             </li>
                             @endif
-                            @if (in_array('cardio.index', $Access))
+                            @if (in_array('operationList.index', $Access))
                             <li class="slide">
-                                <a class="side-menu__item" href="{{ route('cardio.index') }}">
+                                <a class="side-menu__item" href="{{ route('operationList.index') }}">
                                     <div class="fe fe-users side-menu__icon"></div>
-                                    <span class="side-menu__label">Waiting Patients</span>
+                                    <span class="side-menu__label">Theater List</span>
                                 </a>
                             </li>
                             @endif

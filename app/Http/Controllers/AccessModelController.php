@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AccessModel;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 
 class AccessModelController extends Controller
@@ -10,7 +11,7 @@ class AccessModelController extends Controller
     use ValidatesRequests;
     public function index()
     {
-        $access_model = AcesssModel::all();
+        $access_model = AccessModel::all();
         return view('layouts.auth.accessModal')->with('model_list', $access_model);
     }
 
@@ -25,22 +26,22 @@ class AccessModelController extends Controller
         if ($id == 0) { // create
            
             $this->validate($request, [
-                'name' => 'unique:acesss_models,name',
+                'name' => 'unique:access_models,name',
             ]);
 
-            $acesssModel = new acesssModel();
+            $accessModel = new AccessModel();
 
         } else { // update
             $this->validate($request, [
-                'name' => 'unique:acesss_models,name,' .$id,
+                'name' => 'unique:access_models,name,' .$id,
             ]);
 
-            $acesssModel = acesssModel::find($id);
+            $accessModel = AccessModel::find($id);
         }
         
         try {
-            $acesssModel->name = $request->input('name');
-            $acesssModel->save();
+            $accessModel->name = $request->input('name');
+            $accessModel->save();
             
             return redirect()->route('access_model.index')->with('success', 'Accsess Model Added Sucessfully');
 
@@ -53,7 +54,7 @@ class AccessModelController extends Controller
     {
         //
         // $a = false;
-        // $data = acesssModel::find($request->input('delete_id'));
+        // $data = accessModel::find($request->input('delete_id'));
         // $data->delete();
         // $a = app('App\Http\Controllers\ActivityLogController')->index("Remove Access Model");
 

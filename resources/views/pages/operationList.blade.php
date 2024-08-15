@@ -11,7 +11,7 @@
     <div class="ms-auto pageheader-btn">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Cardiothoracic Waiting List</li>
+            <li class="breadcrumb-item active" aria-current="page">List of Operation</li>
         </ol>
     </div>
 </div>
@@ -23,7 +23,7 @@
         <div class="card">
             <div class="card-header border-bottom">
                 <div class="col-lg-6">
-                    <h3 class="card-title">Cardiothoracic Waiting List</h3>
+                    <h3 class="card-title">Theater List of Operation</h3>
                 </div>
                 <div class="col-lg-6 text-end">
                     <button type="button" title="Add" id="btn-add" class="modal-effect btn btn-primary-gradient btn-pill" data-bs-effect="effect-sign" data-bs-toggle="modal" data-bs-target="#modal_"><i class="fe fe-plus me-2"></i>Add</button>
@@ -31,52 +31,54 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered text-nowrap border-bottom Cardio-table" id="file-datatable">
+                    <table class="table table-bordered text-nowrap border-bottom operationList-table" id="file-datatable">
                         <thead>
                             <tr>
                                 <th>Action</th>
                                 <th>No</th>
                                 <th>Status</th>
-                                <th>CTU Number</th>
+                                <th>Category</th>
+                                <th>PHN</th>
                                 <th>Surgery</th>
-                                <!-- <th>Prefix</th> -->
                                 <th>Full Name</th>
-                                <th>Contact Number 1</th>
-                                <th>Contact Number 2</th>
-                                <th>Gender</th>
                                 <th>Age</th>
-                                <th>Address</th>
-                                <th>District</th>
-                                <th>EF%</th>
+                                <th>Sex</th>
+                                <th>Ward</th>
+                                <th>B.H.T</th>
                                 <th>Diagnosis</th>
-                                <th>Comments</th>
-                                <th>CTS</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($cardios as $row)
+                            @foreach ($operationList as $row)
                             <tr>
                                 <td>
-                                    <a class="btn btn-blue edit" title="Edit" data-id="{{ $row->id }}" data-ctu_number="{{ $row->ctu_number }}" data-surgery_id="{{ $row->surgery_id }}" data-prefix="{{ $row->prefix }}" data-full_name="{{ $row->full_name }}" data-gender="{{ $row->gender }}" data-age="{{ $row->age }}" data-contact_number_1="{{ $row->contact_number_1 }}" data-contact_number_2="{{ $row->contact_number_2 }}" data-district="{{ $row->district }}" data-address="{{ $row->address }}" data-ef="{{ $row->ef }}" data-diagnosis="{{ $row->diagnosis }}" data-comments="{{ $row->comments }}" data-cts="{{ $row->cts }}" data-status="{{ $row->status }}">
+                                    <a class="btn btn-blue edit" title="Edit"
+                                        data-id="{{ $row->id }}"
+                                        data-status="{{ $row->status }}"
+                                        data-category="{{ $row->category }}"
+                                        data-patientID="{{ $row->patientID }}"
+                                        data-surgery_name="{{ $row->surgery_id }}"
+                                        data-full_name="{{ $row->patientName }}"
+                                        {{--data-age="{{ $row->age }}"--}}
+                                        data-gender="{{ $row->patientSex }}"
+                                        data-ward="{{ $row->ward }}"
+                                        data-BHTClinicFileNo="{{ $row->BHTClinicFileNo }}"
+                                        data-diagnosis="{{ $row->diagnosis }}"
+                                        data-status="{{ $row->status }}">
                                         <i style="color:rgb(226, 210, 210);cursor: pointer" class="fa fa-edit"></i>
                                     </a>
                                 </td>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $row->status }}</td>
-                                <td>{{ $row->ctu_number }}</td>
+                                <td>{{ $row->category }}</td>
+                                <td>{{ $row->patientID }}</td>
                                 <td>{{ $row->surgery_name }}</td>
-                                <!-- <td>{{ $row->prefix }}</td> -->
-                                <td>{{ $row->full_name }}</td>
-                                <td>{{ $row->contact_number_1 }}</td>
-                                <td>{{ $row->contact_number_2 }}</td>
-                                <td>{{ $row->gender }}</td>
-                                <td>{{ $row->age }}</td>
-                                <td>{{ $row->address }}</td>
-                                <td>{{ $row->district }}</td>
-                                <td>{{ $row->ef }}</td>
+                                <td>{{ $row->patientName }}</td>
+                                {{--<td>{{ $row->age }}</td>--}}
+                                <td>{{ $row->patientSex }}</td>
+                                <td>{{ $row->ward }}</td>
+                                <td>{{ $row->BHTClinicFileNo }}</td>
                                 <td>{{ $row->diagnosis }}</td>
-                                <td>{{ $row->comments }}</td>
-                                <td>{{ $row->cts }}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -95,11 +97,11 @@
     <div class="modal-dialog modal-lg modal-dialog-centered text-center" role="document">
         <div class="modal-content modal-content-demo">
             <div class="modal-header">
-                <h6 class="modal-title" id="createFormModal">Cardiology Unit</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                <h6 class="modal-title" id="createFormModal">Theater List of Operation</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="d-flex justify-content-center mb-4">
                 <div class="form-group text-center">
-                    <label class="form-label" for="search-box">Cardio Patient</label>
+                    <label class="form-label" for="search-box">Patient</label>
                     <form id="search-form" action="{{ route('patient.search') }}" method="GET">
                         <div class="input-group">
                             <input type="text" class="form-control" name="id_patient" id="id_patient" hidden>
@@ -112,16 +114,23 @@
                 </div>
             </div>
             <div class="modal-body text-start">
-                <form action="{{ route('cardio.save') }}" method="POST" class="needs-validation" novalidate>
+                <form action="{{ route('operationList.save') }}" method="POST" class="needs-validation" novalidate>
                     @csrf
                     <input type="text" class="form-control" name="id" id="id" hidden>
-
+                    <input type="text" class="form-control" name="patient" id="patient" >
                     <div class="row">
-                        <div class="form-group col-md-6 col-12">
-                            <label for="ctu_number">CTU Number <span class="required text-red">*</span></label>
-                            <input type="text" class="form-control" id="ctu_number" name="ctu_number" placeholder="Enter CTU Number" required>
-                            <div class="invalid-feedback">Please Enter the CTU Number.</div>
+                        <div class="form-group col-md-4 col-12">
+                            <label for="category">Surgery Category <span class="required text-red">*</span></label>
+                            <select class="form-select" id="category" name="category" required>
+                                <option selected disabled value="">Choose...</option>
+                                <option Value="Routin Local">Routin Local</option>
+                                <option Value="Routin General">Routin General</option>
+                                <option Value="Casuiality Local">Casuiality Local</option>
+                                <option Value="Casuiality General">Casuiality General</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a surgery category.</div>
                         </div>
+
                         <div class="form-group col-md-6 col-12">
                             <label for="surgery">Surgery <span class="required text-red">*</span></label>
                             <select class="form-control select2-show-search form-select" data-placeholder="Choose Surgery" name="surgery" id="surgery" required>
@@ -175,81 +184,22 @@
                     </div>
 
                     <div class="row">
-                        <div class="form-group col-md-3 col-12">
-                            <label for="contact_number_1">Contact Number 01 <span class="required text-red">*</span></label>
-                            <input type="number" class="form-control" id="contact_number_1" name="contact_number_1" placeholder="Enter Contact Number 01" required>
-                            <div class="invalid-feedback">Please Enter the contact number 01.</div>
-                        </div>
-                        <div class="form-group col-md-3 col-12">
-                            <label for="contact_number_2">Contact Number 02</label>
-                            <input type="number" class="form-control" id="contact_number_2" name="contact_number_2" placeholder="Enter Contact Number 02">
-                            <div class="invalid-feedback">Please Enter the contact number 02.</div>
-                        </div>
-                        <div class="form-group col-md-3 col-12">
-                            <label for="district">District</label>
-                            <select class="form-control select2-show-search form-select" id="district" name="district" data-placeholder="Choose one">
-                                <option label="Choose one"></option>
-                                <option value="Ampara">Ampara</option>
-                                <option value="Anuradhapura">Anuradhapura</option>
-                                <option value="Badulla">Badulla</option>
-                                <option value="Batticaloa">Batticaloa</option>
-                                <option value="Colombo">Colombo</option>
-                                <option value="Galle">Galle</option>
-                                <option value="Gampaha">Gampaha</option>
-                                <option value="Hambantota">Hambantota</option>
-                                <option value="Jaffna">Jaffna</option>
-                                <option value="Kalutara">Kalutara</option>
-                                <option value="Kandy">Kandy</option>
-                                <option value="Kegalle">Kegalle</option>
-                                <option value="Kilinochchi">Kilinochchi</option>
-                                <option value="Kurunegala">Kurunegala</option>
-                                <option value="Mannar">Mannar</option>
-                                <option value="Matale">Matale</option>
-                                <option value="Matara">Matara</option>
-                                <option value="Moneragala">Moneragala</option>
-                                <option value="Mullaitivu">Mullaitivu</option>
-                                <option value="Nuwara Eliya">Nuwara Eliya</option>
-                                <option value="Polonnaruwa">Polonnaruwa</option>
-                                <option value="Puttalam">Puttalam</option>
-                                <option value="Ratnapura">Ratnapura</option>
-                                <option value="Trincomalee">Trincomalee</option>
-                                <option value="Vavuniya">Vavuniya</option>
-                            </select>
-                            <div class="invalid-feedback">Please select a District.</div>
-                        </div>
-
-                        <div class="form-group col-md-3 col-12">
-                            <label for="address">Address</label>
-                            <input type="text" class="form-control" id="address" name="address" placeholder="Enter address">
-                        </div>
-                    </div>
-
-                    <div class="row">
                         <div class="form-group col-md-2 col-12">
-                            <label for="ef">EF%</label>
-                            <input type="text" class="form-control" id="ef" name="ef" placeholder="Enter EF%">
-                            <div class="invalid-feedback">Please Enter the EF%.</div>
+                            <label for="ward">Ward</label>
+                            <input type="text" class="form-control" id="ward" name="ward" placeholder="Enter Ward">
+                            <div class="invalid-feedback">Please Enter the Ward.</div>
+                        </div>
+                        <div class="form-group col-md-2 col-12">
+                            <label for="BHTClinicFileNo">BHT</label>
+                            <input type="text" class="form-control" id="BHTClinicFileNo" name="BHTClinicFileNo" placeholder="Enter BHT">
+                            <div class="invalid-feedback">Please Enter the BHT.</div>
                         </div>
                         <div class="form-group col-md-4 col-12">
                             <label for="diagnosis">Diagnosis</label>
                             <textarea class="form-control mb-4" id="diagnosis" name="diagnosis" placeholder="Diagnosis" rows="3"></textarea>
                             <div class="invalid-feedback">Please Enter Diagnosis.</div>
                         </div>
-                        <div class="form-group col-md-4 col-12">
-                            <label for="comments">Comments</label>
-                            <textarea class="form-control mb-4" id="comments" name="comments" placeholder="Comments" rows="3"></textarea>
-                            <div class="invalid-feedback">Please Enter Comments.</div>
-                        </div>
-                        <div class="form-group col-md-2 col-12">
-                            <label for="cts">CTS</label>
-                            <select class="form-select" id="cts" name="cts">
-                                <option selected disabled value="">Choose...</option>
-                                <option Value="Dr S">Dr S</option>
-                                <option Value="Dr PB">Dr AKK</option>
-                                <option Value="Dr PB">Dr PB</option>
-                            </select>
-                            <div class="invalid-feedback">Please select a CTS.</div>
-                        </div>
+
                         <div class="form-group col-md-4 col-12">
                             <label for="status">Status <span class="required text-red">*</span></label>
                             <select class="form-select" id="status" name="status" required>
@@ -282,7 +232,7 @@
     document.getElementById('search-button').addEventListener('click', function() {
         var searchTerm = document.getElementById('search-box').value;
 
-        fetch('{{ route('patient.search') }}?search-term=' + encodeURIComponent(searchTerm))
+        fetch('{{ route("patient.search") }}?search-term=' + encodeURIComponent(searchTerm))
             .then(response => response.json())
             .then(data => {
                 var resultContainer = document.getElementById('search-result');
@@ -339,14 +289,14 @@
             success: function(response) {
                 if (response) {
                     $('#id_patient').val(response.patientID);
+                    $('#patient').val(response.patientID);
                     $('#prefix').val(response.patientPersonalTitle);
                     $('#full_name').val(response.patientName);
                     $('#gender').val(response.patientSex);
                     var age = calculateAge(response.patientDateofbirth);
                     $('#age').val(age);
-                    $('#contact_number_1').val(response.patientContactLand01);
-                    $('#district').val(response.patientAddressDistrict.charAt(0) + response.patientAddressDistrict.slice(1).toLowerCase()).trigger('change');
-                    $('#address').val(response.patientAddressLine01);
+                    $('#ward').val(response.ward);
+                    $('#BHTClinicFileNo').val(response.BHTClinicFileNo);
                 } else {
                     alert('No patient found.');
                 }
@@ -365,9 +315,9 @@
             $('#modal_').modal('show');
             var id = $('#id').val();
             if (id == 0) {
-                $('#createFormModal').html('Create Cardiothoracic Clinic');
+                $('#createFormModal').html('Create Operation List');
             } else {
-                $('#createFormModal').html('Update Cardiothoracic Clinic');
+                $('#createFormModal').html('Update Operation List');
             }
         }
 
@@ -377,48 +327,40 @@
                 element.disabled = false;
             });
             $("#id").val(0);
-            $("#ctu_number").val('');
-            $("#surgery_id").val('').trigger('change');
+            $("#category").val('').trigger('change');
+            $("#patient").val('');
+            $("#surgery").val('').trigger('change');
             $("#prefix").val('');
             $("#full_name").val('');
             $("#gender").val('');
             $("#age").val('');
-            $("#contact_number_1").val('');
-            $("#contact_number_2").val('');
-            $("#district").val('').trigger('change');
-            $("#address").val('');
-            $("#ef").val('');
+            $("#ward").val('');
+            $("#BHTClinicFileNo").val('');
             $("#diagnosis").val('');
-            $("#comments").val('');
-            $("#cts").val('');
             $("#status").val('').trigger('change');
-            $('#createFormModal').html('Create Cardiothoracic Clinic');
+            $('#createFormModal').html('Create Operation List');
             $('p').html('');
             $('#modal_').modal('show');
         });
 
         // edit record
-        $('.Cardio-table').on('click', '.edit', function() {
+        $('.operationList-table').on('click', '.edit', function() {
             document.querySelector('#search-form').querySelectorAll('input, button').forEach(function(element) {
                 element.disabled = true;
             });
             $("#id").val($(this).attr('data-id'));
-            $("#ctu_number").val($(this).attr('data-ctu_number'));
+            $("#category").val($(this).attr('data-category'));
+            $("#patient").val($(this).attr('data-patientID')).trigger('change');
             $("#surgery").val($(this).attr('data-surgery_id')).trigger('change');
-            $("#prefix").val($(this).attr('data-prefix'));
-            $("#full_name").val($(this).attr('data-full_name'));
-            $("#gender").val($(this).attr('data-gender'));
-            $("#age").val($(this).attr('data-age'));
-            $("#contact_number_1").val($(this).attr('data-contact_number_1'));
-            $("#contact_number_2").val($(this).attr('data-contact_number_2'));
-            $("#district").val($(this).attr('data-district')).trigger('change');
-            $("#address").val($(this).attr('data-address'));
-            $("#ef").val($(this).attr('data-ef'));
-            $("#diagnosis").val($(this).attr('data-diagnosis'));
-            $("#comments").val($(this).attr('data-comments'));
-            $("#cts").val($(this).attr('data-cts'));
+            // $("#prefix").val($(this).attr('data-prefix'));
+            // $("#full_name").val($(this).attr('data-full_name'));
+            // $("#gender").val($(this).attr('data-gender'));
+            // $("#age").val($(this).attr('data-age'));
+            // $("#ward").val($(this).attr('data-ward'));
+            // $("#BHTClinicFileNo").val($(this).attr('data-BHTClinicFileNo'));
+            $("#diagnosis").val($(this).attr('data-diagnosis')).trigger('change');
             $("#status").val($(this).attr('data-status'));
-            $('#createFormModal').html('Update Cardiothoracic Clinic');
+            $('#createFormModal').html('Update Operation List');
             $('p').html('');
             $('#modal_').modal('show');
         });

@@ -8,11 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Crypt;
-use App\Models\AcesssPoint;
+use App\Models\AccessPoint;
 use App\Models\Permission;
 use App\Models\User;
-use Illuminate\Support\Facades\Crypt as FacadesCrypt;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class UserController extends Controller
@@ -24,7 +22,7 @@ class UserController extends Controller
         //collection of users
         $super_admin_id = 1;
 
-        $users = DB::table('users_cardio')
+        $users = DB::table('users')
             ->select('id', 'name', 'email')
             //  ->where('employees.role_id','!=',$super_admin_id)
             ->get();
@@ -43,13 +41,13 @@ class UserController extends Controller
 
         if ($id == 0) { // create
             $this->validate($request, [
-                'email' => 'unique:users_cardio,email'
+                'email' => 'unique:users,email'
             ]);
 
             $User = new User();
         } else { // update
             $this->validate($request, [
-                'email' => 'unique:users_cardio,email,' . $id
+                'email' => 'unique:users,email,' . $id
             ]);
 
             $User = User::find($id);
@@ -79,9 +77,9 @@ class UserController extends Controller
         ]);
 
 
-        $user = DB::table('users_cardio')
-            ->select('users_cardio.*', 'users_cardio.password')
-            ->where('users_cardio.email', '=', $request->input('email'))
+        $user = DB::table('users')
+            ->select('users.*', 'users.password')
+            ->where('users.email', '=', $request->input('email'))
             ->first();
 
 
@@ -98,7 +96,7 @@ class UserController extends Controller
 
                 // get permission for route access
                 $permisions = Permission::Where('user_id', $user->id)->first();
-                $accessPoint = AcesssPoint::all();
+                $accessPoint = AccessPoint::all();
                 // return $permisions;
                 if ($permisions) {  // check this role have permisions
                     $permis = json_decode($permisions->permision);
@@ -168,8 +166,8 @@ class UserController extends Controller
                     Auth::login($user);
                     $emp = user::where('id', Auth::user()->emp_id)->first();
 
-                    $permisions = permission::Where('user_role_id', $emp->role_id)->first();
-                    $accessPoint = acesssPoint::all();
+                    $permisions = Permission::Where('user_role_id', $emp->role_id)->first();
+                    $accessPoint = AccessPoint::all();
 
 
                     if ($permisions) {  // check this role have permisions
@@ -253,14 +251,14 @@ class UserController extends Controller
     //      // auth user id
     //      $user_id = Auth::guard()->user()->id;
 
-    //      $user_details = DB::table('users_cardio')
-    //          ->select('users_cardio.id as user_id', 'employees.*', 'departments.name as department_name', 'user_roles.user_role as role_name', 'work_types.name as work_type_name', 'employee_types.type as employee_type')
-    //          ->leftJoin('employees', 'employees.id', 'users_cardio.emp_id')
+    //      $user_details = DB::table('users')
+    //          ->select('users.id as user_id', 'employees.*', 'departments.name as department_name', 'user_roles.user_role as role_name', 'work_types.name as work_type_name', 'employee_types.type as employee_type')
+    //          ->leftJoin('employees', 'employees.id', 'users.emp_id')
     //          ->leftJoin('departments', 'departments.id',  'employees.department_id')
     //          ->leftJoin('user_roles', 'user_roles.id',  'employees.role_id')
     //          ->leftJoin('work_types', 'work_types.id',  'employees.work_type_id')
     //          ->leftJoin('employee_types', 'employee_types.id',  'employees.employee_type_id')
-    //          ->where('users_cardio.id', $user_id)
+    //          ->where('users.id', $user_id)
     //          ->first();
     //      // return $user_details;
 

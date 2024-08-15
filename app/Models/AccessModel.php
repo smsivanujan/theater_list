@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class AccessModel extends Model
 {
     use HasFactory;
-    protected $table = 'acesss_models';
+    protected $table = 'access_models';
     protected $primarykey ='id';
 
     protected $fillable = [

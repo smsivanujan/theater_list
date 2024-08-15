@@ -2,9 +2,6 @@
 
 use App\Http\Controllers\AccessModelController;
 use App\Http\Controllers\AccessPointController;
-use App\Http\Controllers\AcesssModelController;
-use App\Http\Controllers\AcesssPointController;
-use App\Http\Controllers\CardioThoraricController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OpertationListController;
 use App\Http\Controllers\PermissionController;
@@ -53,7 +50,7 @@ Route::group(['middleware' => ['auth']], function () { //'CheckAccess'
 
     // Route::get('surgery/show', [SurgeryController::class, 'index'])->name('surgery.index');
 
-    Route::get('/cardio', [OpertationListController::class, 'index'])->name('cardio.index');
+    Route::get('/operationList', [OpertationListController::class, 'index'])->name('operationList.index');
     Route::get('/search', [OpertationListController::class, 'search'])->name('patient.search');
-    Route::post('cardio/save', [OpertationListController::class, 'save'])->name('cardio.save');
+    Route::post('operationList/save', [OpertationListController::class, 'save'])->name('operationList.save');
 });

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccessModel;
+use App\Models\AccessPoint;
 use App\Models\Permission;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PermissionController extends Controller
@@ -14,9 +17,9 @@ class PermissionController extends Controller
         // get user role by id
         $user = User::find($id);
         //get Access models
-        $access_model = AcesssModel::all();
+        $access_model = AccessModel::all();
         //get all access point
-        $access_point = AcesssPoint::all();
+        $access_point = AccessPoint::all();
         return view('layouts.auth.permission')
             ->with('access_model', $access_model)
             ->with('user', $user)
@@ -34,10 +37,10 @@ class PermissionController extends Controller
         if ($pid == 0) { // create
 
 
-            $permission = new permission();
+            $permission = new Permission();
         } else { // update
 
-            $permission = permission::find($pid);
+            $permission = Permission::find($pid);
         }
 
         try {

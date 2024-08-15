@@ -34,7 +34,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered text-nowrap border-bottom Cardio-table" id="basic-datatable">
+                    <table class="table table-bordered text-nowrap border-bottom operationList-table" id="basic-datatable">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -132,7 +132,7 @@
         });
 
         // edit record
-        $('.Cardio-table').on('click', '.edit', function() {
+        $('.operationList-table').on('click', '.edit', function() {
             $("#id").val($(this).attr('data-id'));
             $("#surgery_name").val($(this).attr('data-surgery_name'));
             $("#detail").val($(this).attr('data-detail'));

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class AccessPoint extends Model
 {
     use HasFactory;
-    protected $table = 'acesss_points';
+    protected $table = 'access_points';
     protected $primarykey = 'id';
 
     protected $fillable = [
