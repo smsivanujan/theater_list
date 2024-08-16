@@ -20,6 +20,12 @@
                             <li>
                                 <h3>Menu</h3>
                             </li>
+                            <li class="slide">
+                                <a class="side-menu__item" href="{{ route('reportPrint.index') }}">
+                                    <div class="fe fe-scissors side-menu__icon"></div>
+                                    <span class="side-menu__label">Report</span>
+                                </a>
+                            </li>
                             @if (in_array('index.dashboard', $Access))
                             <li class="slide">
                                 <a class="side-menu__item" href="{{ route('index.dashboard') }}">
@@ -44,6 +50,8 @@
                                 </a>
                             </li>
                             @endif
+
+                           
 
                             @if (in_array('user.index', $Access) || in_array('access_model.index', $Access))
                             <li>

@@ -36,15 +36,16 @@
                             <tr>
                                 <th>Action</th>
                                 <th>No</th>
-                                <th>Status</th>
                                 <th>Category</th>
-                                <th>PHN</th>
+                                <th>Surgery Date</th>
                                 <th>Surgery</th>
+                                <th>PHN</th>
                                 <th>Full Name</th>
+                                <th>B.H.T</th>
+                                <th>Ward</th>
+                                <th>Dr</th>
                                 <th>Age</th>
                                 <th>Sex</th>
-                                <th>Ward</th>
-                                <th>B.H.T</th>
                                 <th>Diagnosis</th>
                             </tr>
                         </thead>
@@ -56,10 +57,12 @@
                                         data-id="{{ $row->id }}"
                                         data-status="{{ $row->status }}"
                                         data-category="{{ $row->category }}"
+                                        data-surgery_date="{{ $row->surgery_date }}"
                                         data-patientID="{{ $row->patientID }}"
-                                        data-surgery_name="{{ $row->surgery_id }}"
+                                        data-surgery="{{ $row->surgery_id }}"
+                                        data-prefix="{{ $row->patientPersonalTitle }}"
                                         data-full_name="{{ $row->patientName }}"
-                                        {{--data-age="{{ $row->age }}"--}}
+                                        data-age="{{ $row->age }}"
                                         data-gender="{{ $row->patientSex }}"
                                         data-ward="{{ $row->ward }}"
                                         data-BHTClinicFileNo="{{ $row->BHTClinicFileNo }}"
@@ -68,17 +71,18 @@
                                         <i style="color:rgb(226, 210, 210);cursor: pointer" class="fa fa-edit"></i>
                                     </a>
                                 </td>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $row->status }}</td>
+                                <td>{{ $loop->iteration }}</td>   
                                 <td>{{ $row->category }}</td>
-                                <td>{{ $row->patientID }}</td>
+                                <td>{{ $row->surgery_date }}</td>
                                 <td>{{ $row->surgery_name }}</td>
+                                <td>{{ $row->patientID }}</td>
                                 <td>{{ $row->patientName }}</td>
-                                {{--<td>{{ $row->age }}</td>--}}
-                                <td>{{ $row->patientSex }}</td>
-                                <td>{{ $row->ward }}</td>
                                 <td>{{ $row->BHTClinicFileNo }}</td>
+                                <td>{{ $row->ward }}</td>
+                                <td>{{ $row->age }}</td>
+                                <td>{{ $row->patientSex }}</td>
                                 <td>{{ $row->diagnosis }}</td>
+                                <td>{{ $row->status }}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -106,7 +110,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" name="id_patient" id="id_patient" hidden>
                             <input type="text" class="form-control" id="search-box" name="search-term" placeholder="Search for...">
-                            <button type="button" id="search-button" class="input-group-text btn btn-primary text-white">Go!</button>
+                            <button type="button" id="search-button" class="input-group-text btn btn-primary text-white">Search!</button>
                         </div>
                     </form>
                     <label for="">Search with PHN/NIC/Passport/BHT/Phone Number(Handphone or Landline)</label>
@@ -117,7 +121,7 @@
                 <form action="{{ route('operationList.save') }}" method="POST" class="needs-validation" novalidate>
                     @csrf
                     <input type="text" class="form-control" name="id" id="id" hidden>
-                    <input type="text" class="form-control" name="patient" id="patient" >
+                    <input type="text" class="form-control" name="patient" id="patient" hidden >
                     <div class="row">
                         <div class="form-group col-md-4 col-12">
                             <label for="category">Surgery Category <span class="required text-red">*</span></label>
@@ -130,8 +134,12 @@
                             </select>
                             <div class="invalid-feedback">Please select a surgery category.</div>
                         </div>
-
-                        <div class="form-group col-md-6 col-12">
+                        <div class="form-group col-md-4 col-12">
+                            <label for="full_name">Surgery Date <span class="required text-red">*</span></label>
+                            <input type="date" class="form-control" id="surgery_date" name="surgery_date" placeholder="Enter Surgery Date" required>
+                            <div class="invalid-feedback">Please Enter the Surgery Date.</div>
+                        </div>
+                        <div class="form-group col-md-4 col-12">
                             <label for="surgery">Surgery <span class="required text-red">*</span></label>
                             <select class="form-control select2-show-search form-select" data-placeholder="Choose Surgery" name="surgery" id="surgery" required>
                                 <option label="Choose"></option>
@@ -196,7 +204,7 @@
                         </div>
                         <div class="form-group col-md-4 col-12">
                             <label for="diagnosis">Diagnosis</label>
-                            <textarea class="form-control mb-4" id="diagnosis" name="diagnosis" placeholder="Diagnosis" rows="3"></textarea>
+                            <textarea class="form-control mb-4" id="diagnosis" name="diagnosis" placeholder="diagnosis" rows="3"></textarea>
                             <div class="invalid-feedback">Please Enter Diagnosis.</div>
                         </div>
 
@@ -330,6 +338,7 @@
             $("#category").val('').trigger('change');
             $("#patient").val('');
             $("#surgery").val('').trigger('change');
+            $("#surgery_date").val('');
             $("#prefix").val('');
             $("#full_name").val('');
             $("#gender").val('');
@@ -351,13 +360,14 @@
             $("#id").val($(this).attr('data-id'));
             $("#category").val($(this).attr('data-category'));
             $("#patient").val($(this).attr('data-patientID')).trigger('change');
-            $("#surgery").val($(this).attr('data-surgery_id')).trigger('change');
-            // $("#prefix").val($(this).attr('data-prefix'));
-            // $("#full_name").val($(this).attr('data-full_name'));
-            // $("#gender").val($(this).attr('data-gender'));
-            // $("#age").val($(this).attr('data-age'));
-            // $("#ward").val($(this).attr('data-ward'));
-            // $("#BHTClinicFileNo").val($(this).attr('data-BHTClinicFileNo'));
+            $("#surgery").val($(this).attr('data-surgery')).trigger('change');
+            $("#prefix").val($(this).attr('data-prefix'));
+            $("#surgery_date").val($(this).attr('data-surgery_date'));
+            $("#full_name").val($(this).attr('data-full_name'));
+            $("#gender").val($(this).attr('data-gender'));
+            $("#age").val($(this).attr('data-age'));
+            $("#ward").val($(this).attr('data-ward'));
+            $("#BHTClinicFileNo").val($(this).attr('data-BHTClinicFileNo'));
             $("#diagnosis").val($(this).attr('data-diagnosis')).trigger('change');
             $("#status").val($(this).attr('data-status'));
             $('#createFormModal').html('Update Operation List');

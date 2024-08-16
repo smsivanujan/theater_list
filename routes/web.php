@@ -5,6 +5,7 @@ use App\Http\Controllers\AccessPointController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OpertationListController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SurgeryTypeController;
 use App\Http\Controllers\UserController;
 
@@ -53,4 +54,6 @@ Route::group(['middleware' => ['auth']], function () { //'CheckAccess'
     Route::get('/operationList', [OpertationListController::class, 'index'])->name('operationList.index');
     Route::get('/search', [OpertationListController::class, 'search'])->name('patient.search');
     Route::post('operationList/save', [OpertationListController::class, 'save'])->name('operationList.save');
+
+    Route::get('/reportPrint', [ReportController::class, 'index'])->name('reportPrint.index');
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\OpertationList;
+use Carbon\Carbon;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,13 +17,15 @@ class OpertationListController extends Controller
             ->select(
                 'opertation_lists.id',
                 'opertation_lists.category',
+                'opertation_lists.surgery_date',
                 'opertation_lists.diagnosis',
                 'opertation_lists.status',
                 'surgery_types.id AS surgery_id',
                 'surgery_types.surgery_name',
                 'patientdemographic.patientID',
+                'patientdemographic.patientPersonalTitle',
                 'patientdemographic.patientName',
-                // 'patientdemographic.age',
+                'patientdemographic.patientDateofbirth',
                 'patientdemographic.patientSex',
                 'department.departmentTitle AS ward',
                 'admission.BHTClinicFileNo'
@@ -33,7 +36,10 @@ class OpertationListController extends Controller
             ->join('department', 'admission.departmentCode', 'department.departmentCode')
             ->get();
 
-
+        // Calculate age
+        foreach ($operationList as $operation) {
+            $operation->age = Carbon::parse($operation->patientDateofbirth)->age; // Correct field name here
+        }
 
         $surgeries = DB::table('surgery_types')
             ->select('id', 'surgery_name')
@@ -103,6 +109,7 @@ class OpertationListController extends Controller
         }
 
         $opertationList->category = $request->input('category');
+        $opertationList->surgery_date = $request->input('surgery_date');
         $opertationList->patient_id = $request->input('patient');
         $opertationList->surgery_id = $request->input('surgery');
         $opertationList->diagnosis = $request->input('diagnosis');
