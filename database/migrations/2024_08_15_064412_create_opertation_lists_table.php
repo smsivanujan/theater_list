@@ -23,7 +23,6 @@ return new class extends Migration
             // $table->string('ward')->nullable();
             // $table->string('bht')->nullable();
             $table->longText('diagnosis')->nullable();
-            $table->string('status');
             $table->timestamps();
         });
     }

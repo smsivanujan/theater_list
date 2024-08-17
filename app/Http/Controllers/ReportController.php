@@ -10,8 +10,8 @@ class ReportController extends Controller
 {
     public function index(Request $request)
     {
-        $surgeryDate = $request->input('surgery_date');
-        $consultant = $request->input('consultant');
+        $surgeryDate = $request->surgery_date;
+        $category = $request->category;
 
         $operationList = DB::table('opertation_lists')
             ->select(
@@ -19,7 +19,6 @@ class ReportController extends Controller
                 'opertation_lists.category',
                 'opertation_lists.surgery_date',
                 'opertation_lists.diagnosis',
-                'opertation_lists.status',
                 'surgery_types.id AS surgery_id',
                 'surgery_types.surgery_name',
                 'patientdemographic.patientID',
@@ -30,18 +29,29 @@ class ReportController extends Controller
                 'department.departmentTitle AS ward',
                 'admission.BHTClinicFileNo'
             )
-            ->join('surgery_types', 'opertation_lists.surgery_id', 'surgery_types.id')
-            ->join('patientdemographic', 'opertation_lists.patient_id', 'patientdemographic.patientID')
-            ->join('admission', 'patientdemographic.patientID', 'admission.patientID')
-            ->join('department', 'admission.departmentCode', 'department.departmentCode')
+            ->join('surgery_types', 'opertation_lists.surgery_id', '=', 'surgery_types.id')
+            ->join('patientdemographic', 'opertation_lists.patient_id', '=', 'patientdemographic.patientID')
+            ->join('admission', 'patientdemographic.patientID', '=', 'admission.patientID')
+            ->join('department', 'admission.departmentCode', '=', 'department.departmentCode')
+            ->where('opertation_lists.surgery_date', '=', $surgeryDate)
+            ->where('opertation_lists.category', '=', $category)
             ->get();
 
-        
-            // Calculate age
+        // Calculate age
         foreach ($operationList as $operation) {
-            $operation->age = Carbon::parse($operation->patientDateofbirth)->age; // Correct field name here
+            $operation->age = Carbon::parse($operation->patientDateofbirth)->age;
         }
 
-        return view('pages.reportPrint', compact('operationList'));
+        return view('pages.reportPrint', compact('operationList', 'surgeryDate', 'category'));
+    }
+
+    public function print(Request $request)
+    {
+        $operationList = json_decode($request->input('operationList'));
+        $surgeryDate = $request->input('surgeryDate');
+        $consultant = $request->input('consultant');
+        $category = $request->input('category');
+
+        return view('pages.print', compact('operationList', 'surgeryDate', 'consultant', 'category'));
     }
 }

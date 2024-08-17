@@ -56,4 +56,6 @@ Route::group(['middleware' => ['auth']], function () { //'CheckAccess'
     Route::post('operationList/save', [OpertationListController::class, 'save'])->name('operationList.save');
 
     Route::get('/reportPrint', [ReportController::class, 'index'])->name('reportPrint.index');
+    Route::post('/reportPrint/print', [ReportController::class, 'print'])->name('reportPrint.print');
+
 });

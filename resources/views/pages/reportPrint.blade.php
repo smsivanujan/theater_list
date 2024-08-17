@@ -11,7 +11,7 @@
     <div class="ms-auto pageheader-btn">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="javascript:void(0);">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Report</li>
+            <li class="breadcrumb-item active" aria-current="page">Print Theater List</li>
         </ol>
     </div>
 </div>
@@ -29,26 +29,57 @@
             <div class="card-body">
 
                 <div class="row">
-                    <div class="form-group col-md-4 col-12">
-                        <label for="status">Consultant <span class="required text-red">*</span></label>
-                        <select class="form-select" id="status" name="status" required>
-                            <option selected disabled value="">Choose...</option>
-                            <option Value="Dr. K. Guruparan">Dr. K. Guruparan</option>
-                            <option Value="Dr. S. Raguraman">Dr. S. Raguraman</option>
-                            <option Value="Dr. K. Muhunthan">Dr. K. Muhunthan</option>
-                            <option Value="Dr. G. Bavani">Dr. G. Bavani</option>
-                        </select>
-                        <div class="invalid-feedback">Please select a consultant.</div>
-                    </div>
-                    <div class="form-group col-md-4 col-12">
-                        <label for="full_name">Surgery Date <span class="required text-red">*</span></label>
-                        <input type="date" class="form-control" id="surgery_date" name="surgery_date" placeholder="Enter Surgery Date" required>
-                        <div class="invalid-feedback">Please Enter the Surgery Date.</div>
-                    </div>
+                    <form action="{{ route('reportPrint.index') }}" method="GET" class="row m-0 pt-3">
+                        <div class="form-group col-md-4">
+                            <label for="category">Surgery Category <span class="required text-red">*</span></label>
+                            <select class="form-select" name="category" required>
+                                <option selected disabled value="">Choose...</option>
+                                <option Value="Routin Local" {{$category == 'Routin Local' ? 'selected':''}}>Routin Local</option>
+                                <option Value="Routin General" {{$category == 'Routin General' ? 'selected':''}}>Routin General</option>
+                                <option Value="Casuiality Local" {{$category == 'Casuiality Local' ? 'selected':''}}>Casuiality Local</option>
+                                <option Value="Casuiality General" {{$category == 'Casuiality General' ? 'selected':''}}>Casuiality General</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a surgery category.</div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="full_name">Surgery Date <span class="required text-red">*</span></label>
+                            <input type="date" class="form-control" id="surgery_date" name="surgery_date" value="{{$surgeryDate}}" placeholder="Enter Surgery Date" required>
+                            <div class="invalid-feedback">Please Enter the Surgery Date.</div>
+                        </div>
+                        <div class="form-group col-md-4" style="margin-top:24px">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </form>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <form action="{{ route('reportPrint.print') }}" method="POST" target="_blank" class="row m-0 pt-3">
+                        @csrf
+                        <div class="form-group col-md-4">
+                            <label for="consultant">Consultant <span class="required text-red">*</span></label>
+                            <select class="form-select" name="consultant" required>
+                                <option selected disabled value="">Choose...</option>
+                                <option value="Dr.K.Guruparan">Dr.K.Guruparan</option>
+                                <option value="Dr.S.Raguraman">Dr.S.Raguraman</option>
+                                <option value="Dr.K.Muhunthan">Dr.K.Muhunthan</option>
+                                <option value="Dr.G.Bavani">Dr.G.Bavani</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a consultant.</div>
+                        </div>
+                        <div class="form-group col-md-4" style="margin-top:28px">
+                            <input type="hidden" name="operationList" value="{{ json_encode($operationList) }}">
+                            <input type="hidden" name="surgeryDate" value="{{ $surgeryDate }}">
+                            {{--<input type="hidden" name="consultant" value="{{ $consultant }}">--}}
+                            <input type="hidden" name="category" value="{{ $category }}">
+                            <button type="submit" class="btn btn-primary">Print</button>
+                        </div>
+                    </form>
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table table-bordered text-nowrap border-bottom operationList-table" id="file-datatable">
+                    <table class="table table-bordered text-nowrap border-bottom operationList-table" id="responsive-datatable">
                         <thead>
                             <tr>
                                 <th>No</th>

@@ -43,10 +43,9 @@
                                 <th>Full Name</th>
                                 <th>B.H.T</th>
                                 <th>Ward</th>
-                                <th>Dr</th>
+                                <th>Diagnosis</th>
                                 <th>Age</th>
                                 <th>Sex</th>
-                                <th>Diagnosis</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,7 +54,6 @@
                                 <td>
                                     <a class="btn btn-blue edit" title="Edit"
                                         data-id="{{ $row->id }}"
-                                        data-status="{{ $row->status }}"
                                         data-category="{{ $row->category }}"
                                         data-surgery_date="{{ $row->surgery_date }}"
                                         data-patientID="{{ $row->patientID }}"
@@ -66,12 +64,11 @@
                                         data-gender="{{ $row->patientSex }}"
                                         data-ward="{{ $row->ward }}"
                                         data-BHTClinicFileNo="{{ $row->BHTClinicFileNo }}"
-                                        data-diagnosis="{{ $row->diagnosis }}"
-                                        data-status="{{ $row->status }}">
+                                        data-diagnosis="{{ $row->diagnosis }}">
                                         <i style="color:rgb(226, 210, 210);cursor: pointer" class="fa fa-edit"></i>
                                     </a>
                                 </td>
-                                <td>{{ $loop->iteration }}</td>   
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $row->category }}</td>
                                 <td>{{ $row->surgery_date }}</td>
                                 <td>{{ $row->surgery_name }}</td>
@@ -79,10 +76,9 @@
                                 <td>{{ $row->patientName }}</td>
                                 <td>{{ $row->BHTClinicFileNo }}</td>
                                 <td>{{ $row->ward }}</td>
+                                <td>{{ $row->diagnosis }}</td>
                                 <td>{{ $row->age }}</td>
                                 <td>{{ $row->patientSex }}</td>
-                                <td>{{ $row->diagnosis }}</td>
-                                <td>{{ $row->status }}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -121,9 +117,14 @@
                 <form action="{{ route('operationList.save') }}" method="POST" class="needs-validation" novalidate>
                     @csrf
                     <input type="text" class="form-control" name="id" id="id" hidden>
-                    <input type="text" class="form-control" name="patient" id="patient" hidden >
+
                     <div class="row">
-                        <div class="form-group col-md-4 col-12">
+                        <div class="form-group col-md-4">
+                            <label for="phn">PHN</label>
+                            <input type="text" class="form-control" name="patient" id="patient" disabled required>
+                            <div class="invalid-feedback">Please select the patient.</div>
+                        </div>
+                        <div class="form-group col-md-4">
                             <label for="category">Surgery Category <span class="required text-red">*</span></label>
                             <select class="form-select" id="category" name="category" required>
                                 <option selected disabled value="">Choose...</option>
@@ -134,13 +135,16 @@
                             </select>
                             <div class="invalid-feedback">Please select a surgery category.</div>
                         </div>
-                        <div class="form-group col-md-4 col-12">
+                        <div class="form-group col-md-4">
                             <label for="full_name">Surgery Date <span class="required text-red">*</span></label>
                             <input type="date" class="form-control" id="surgery_date" name="surgery_date" placeholder="Enter Surgery Date" required>
-                            <div class="invalid-feedback">Please Enter the Surgery Date.</div>
+                            <div class="invalid-feedback">Please enter the surgery date.</div>
                         </div>
-                        <div class="form-group col-md-4 col-12">
-                            <label for="surgery">Surgery <span class="required text-red">*</span></label>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label for="surgery">Surgery Type <span class="required text-red">*</span></label>
                             <select class="form-control select2-show-search form-select" data-placeholder="Choose Surgery" name="surgery" id="surgery" required>
                                 <option label="Choose"></option>
                                 @foreach ($surgeries as $item)
@@ -149,12 +153,12 @@
                                 </option>
                                 @endforeach
                             </select>
-                            <div class="invalid-feedback">Please Select the Surgery.</div>
+                            <div class="invalid-feedback">Please select the surgery.</div>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="form-group col-md-2 col-12">
+                        <div class="form-group col-md-2">
                             <label for="prefix">Prefix</label>
                             <select class="form-select" id="prefix" name="prefix">
                                 <option selected disabled value="">Choose...</option>
@@ -169,12 +173,12 @@
                             </select>
                             <div class="invalid-feedback">Please select a prefix.</div>
                         </div>
-                        <div class="form-group col-md-6 col-12">
+                        <div class="form-group col-md-6">
                             <label for="full_name">Patient Name <span class="required text-red">*</span></label>
                             <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Enter Full Name" required>
-                            <div class="invalid-feedback">Please Enter the Patient Name.</div>
+                            <div class="invalid-feedback">Please enter the patient name.</div>
                         </div>
-                        <div class="form-group col-md-2 col-12">
+                        <div class="form-group col-md-2">
                             <label for="gender">Gender</label>
                             <select class="form-select" id="gender" name="gender">
                                 <option selected disabled value="">Choose...</option>
@@ -184,42 +188,28 @@
                             </select>
                             <div class="invalid-feedback">Please select a gender.</div>
                         </div>
-                        <div class="form-group col-md-2 col-12">
+                        <div class="form-group col-md-2">
                             <label for="age">Age</label>
                             <input type="number" class="form-control" id="age" name="age" placeholder="Enter Age">
-                            <div class="invalid-feedback">Please Enter the Age.</div>
+                            <div class="invalid-feedback">Please enter the Age.</div>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="form-group col-md-2 col-12">
+                        <div class="form-group col-md-3">
                             <label for="ward">Ward</label>
                             <input type="text" class="form-control" id="ward" name="ward" placeholder="Enter Ward">
-                            <div class="invalid-feedback">Please Enter the Ward.</div>
+                            <div class="invalid-feedback">Please enter the ward.</div>
                         </div>
-                        <div class="form-group col-md-2 col-12">
+                        <div class="form-group col-md-3">
                             <label for="BHTClinicFileNo">BHT</label>
                             <input type="text" class="form-control" id="BHTClinicFileNo" name="BHTClinicFileNo" placeholder="Enter BHT">
-                            <div class="invalid-feedback">Please Enter the BHT.</div>
+                            <div class="invalid-feedback">Please enter the BHT.</div>
                         </div>
-                        <div class="form-group col-md-4 col-12">
+                        <div class="form-group col-md-6">
                             <label for="diagnosis">Diagnosis</label>
                             <textarea class="form-control mb-4" id="diagnosis" name="diagnosis" placeholder="diagnosis" rows="3"></textarea>
-                            <div class="invalid-feedback">Please Enter Diagnosis.</div>
-                        </div>
-
-                        <div class="form-group col-md-4 col-12">
-                            <label for="status">Status <span class="required text-red">*</span></label>
-                            <select class="form-select" id="status" name="status" required>
-                                <option selected disabled value="">Choose...</option>
-                                <option Value="Surgery Done">Surgery Done</option>
-                                <option Value="Awaiting">Awaiting</option>
-                                <option Value="Passed Away">Passed Away</option>
-                                <option Value="Medical Management">Medical Management</option>
-                                <option Value="Not Intrest">Not Intrested</option>
-                                <option Value="Not Fit">Not Fit</option>
-                            </select>
-                            <div class="invalid-feedback">Please select a Status.</div>
+                            <div class="invalid-feedback">Please enter diagnosis.</div>
                         </div>
                     </div>
 
@@ -248,21 +238,17 @@
                     resultContainer.textContent = data.message;
 
                     $("#id").val(0);
-                    $("#ctu_number").val('');
-                    $("#surgery_id").val('').trigger('change');
+                    $("#category").val('').trigger('change');
+                    $("#patient").val('');
+                    $("#surgery").val('').trigger('change');
+                    $("#surgery_date").val('');
                     $("#prefix").val('');
                     $("#full_name").val('');
                     $("#gender").val('');
                     $("#age").val('');
-                    $("#contact_number_1").val('');
-                    $("#contact_number_2").val('');
-                    $("#district").val('').trigger('change');
-                    $("#address").val('');
-                    $("#ef").val('');
+                    $("#ward").val('');
+                    $("#BHTClinicFileNo").val('');
                     $("#diagnosis").val('');
-                    $("#comments").val('');
-                    $("#cts").val('');
-                    $("#status").val('').trigger('change');
                 } else {
                     // ("#search-result").val('');
                 }
@@ -346,7 +332,6 @@
             $("#ward").val('');
             $("#BHTClinicFileNo").val('');
             $("#diagnosis").val('');
-            $("#status").val('').trigger('change');
             $('#createFormModal').html('Create Operation List');
             $('p').html('');
             $('#modal_').modal('show');
@@ -369,7 +354,6 @@
             $("#ward").val($(this).attr('data-ward'));
             $("#BHTClinicFileNo").val($(this).attr('data-BHTClinicFileNo'));
             $("#diagnosis").val($(this).attr('data-diagnosis')).trigger('change');
-            $("#status").val($(this).attr('data-status'));
             $('#createFormModal').html('Update Operation List');
             $('p').html('');
             $('#modal_').modal('show');

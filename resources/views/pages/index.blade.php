@@ -27,10 +27,10 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        @foreach ($total_patients as $item)
-                        <h3 class="mb-2 fw-semibold">{{$item->totalPatient}}</h3>
+                        @foreach ($total_surgeries as $item)
+                        <h3 class="mb-2 fw-semibold">{{$item->totalSurgeries}}</h3>
                         @endforeach
-                        <p class="text-muted fs-13 mb-0">Total Patients</p>
+                        <p class="text-muted fs-13 mb-0">Total Surgeries</p>
                     </div>
                     <div class="col col-auto top-icn dash">
                         <div class="counter-icon bg-primary dash ms-auto box-shadow-primary">
@@ -48,10 +48,10 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        @foreach ($total_waiting_patients as $item)
-                        <h3 class="mb-2 fw-semibold">{{$item->totalWaitingPatient}}</h3>
+                        @foreach ($today_surgeries as $item)
+                        <h3 class="mb-2 fw-semibold">{{$item->todaySurgeries}}</h3>
                         @endforeach
-                        <p class="text-muted fs-13 mb-0">Waiting Patients</p>
+                        <p class="text-muted fs-13 mb-0">Today Surgeries</p>
                     </div>
                     <div class="col col-auto top-icn dash">
                         <div class="counter-icon bg-primary dash ms-auto box-shadow-primary">
@@ -69,10 +69,10 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        @foreach ($total_sucessfull_patients as $item)
-                        <h3 class="mb-2 fw-semibold">{{$item->totalSucessfullPatient}}</h3>
+                        @foreach ($total_surgery_types as $item)
+                        <h3 class="mb-2 fw-semibold">{{$item->surgeryTypes}}</h3>
                         @endforeach
-                        <p class="text-muted fs-13 mb-0">Surgery Complete Patients</p>
+                        <p class="text-muted fs-13 mb-0">Surgery Types</p>
                     </div>
                     <div class="col col-auto top-icn dash">
                         <div class="counter-icon bg-primary dash ms-auto box-shadow-primary">
@@ -90,10 +90,8 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        @foreach ($total_other_patients as $item)
-                        <h3 class="mb-2 fw-semibold">{{$item->totalOtherPatient}}</h3>
-                        @endforeach
-                        <p class="text-muted fs-13 mb-0">Other Patients</p>
+                        <h3 class="mb-2 fw-semibold">4</h3>
+                        <p class="text-muted fs-13 mb-0">Doctors</p>
                     </div>
                     <div class="col col-auto top-icn dash">
                         <div class="counter-icon bg-primary dash ms-auto box-shadow-primary">
@@ -102,21 +100,6 @@
                             </svg>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-lg-6 col-md-12">
-        <div class="card">
-            <div class="card-header border-bottom">
-                <h3 class="card-title">Patients by Status</h3>
-            </div>
-            <div class="card-body">
-                <div class="chart-container">
-                    <canvas id="chartDonut" class="h-275"></canvas>
                 </div>
             </div>
         </div>
@@ -131,39 +114,5 @@
 @endsection
 
 @section('scripts')
-
-<!-- CHARTJS JS -->
-<script src="../assets/plugins/chart/Chart.bundle.js"></script>
-<script src="../assets/plugins/chart/utils.js"></script>
-<script src="../assets/js/chart.js"></script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const ctx = document.getElementById('chartDonut').getContext('2d');
-
-        // Prepare the data for the pie chart
-        const pieData = @json($pie_charts);
-
-        // Extract labels and data
-        const labels = pieData.map(item => item.status);
-        const data = pieData.map(item => item.totalPatients);
-
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Patients by Status',
-                    data: data,
-                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'], // Customize colors
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-            }
-        });
-    });
-</script>
 
 @endsection

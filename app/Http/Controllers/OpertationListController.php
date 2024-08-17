@@ -19,7 +19,6 @@ class OpertationListController extends Controller
                 'opertation_lists.category',
                 'opertation_lists.surgery_date',
                 'opertation_lists.diagnosis',
-                'opertation_lists.status',
                 'surgery_types.id AS surgery_id',
                 'surgery_types.surgery_name',
                 'patientdemographic.patientID',
@@ -113,7 +112,6 @@ class OpertationListController extends Controller
         $opertationList->patient_id = $request->input('patient');
         $opertationList->surgery_id = $request->input('surgery');
         $opertationList->diagnosis = $request->input('diagnosis');
-        $opertationList->status = $request->input('status');
         $opertationList->save();
 
         return redirect()->route('operationList.index')->with('success', 'Operation detail saved successfully.');
