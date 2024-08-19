@@ -110,7 +110,6 @@
                                 <td>{{ $row->age }}</td>
                                 <td>{{ $row->patientSex }}</td>
                                 <td>{{ $row->diagnosis }}</td>
-                                <td>{{ $row->status }}</td>
                             </tr>
                             @endforeach
                         </tbody>

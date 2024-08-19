@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\DB;
 
 class SurgeryTypesTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $surgeryTypes = [
