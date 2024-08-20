@@ -112,8 +112,8 @@
 
 <body>
     <div class="header">
-        <h1>Teaching Hospital Jaffna</h1>
-        <h2>List Of Operation</h2>
+        <h1>TEACHING HOSPITAL JAFFNA</h1>
+        <h2>LIST OF OPERATION</h2>
     </div>
     <div class="info">
         <div>
