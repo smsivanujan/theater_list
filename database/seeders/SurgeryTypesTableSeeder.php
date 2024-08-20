@@ -40,10 +40,11 @@ class SurgeryTypesTableSeeder extends Seeder
             'Burchcolposuspension'
         ];
 
-        foreach ($surgeryTypes as $type) {
-            DB::table('surgery_types')->insert([
-                'surgery_name' => $type,
-            ]);
+        foreach ($surgeryTypes as $surgeryType) {
+            DB::table('surgery_types')->updateOrInsert(
+                ['surgery_name' => $surgeryType],
+                ['surgery_name' => $surgeryType] // You can update other fields if necessary
+            );
         }
     }
 }

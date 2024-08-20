@@ -121,7 +121,7 @@
                     <div class="row">
                         <div class="form-group col-md-4">
                             <label for="phn">PHN</label>
-                            <input type="text" class="form-control" name="patient" id="patient" disabled required>
+                            <input type="text" class="form-control" name="patient" id="patient" readonly required>
                             <div class="invalid-feedback">Please select the patient.</div>
                         </div>
                         <div class="form-group col-md-4">
