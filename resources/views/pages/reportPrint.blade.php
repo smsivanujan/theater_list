@@ -34,10 +34,10 @@
                             <label for="category">Surgery Category <span class="required text-red">*</span></label>
                             <select class="form-select" name="category" required>
                                 <option selected disabled value="">Choose...</option>
-                                <option Value="Routin Local" {{$category == 'Routin Local' ? 'selected':''}}>Routin Local</option>
-                                <option Value="Routin General" {{$category == 'Routin General' ? 'selected':''}}>Routin General</option>
-                                <option Value="Casuiality Local" {{$category == 'Casuiality Local' ? 'selected':''}}>Casuiality Local</option>
-                                <option Value="Casuiality General" {{$category == 'Casuiality General' ? 'selected':''}}>Casuiality General</option>
+                                <option Value="Routine Local" {{$category == 'Routine Local' ? 'selected':''}}>Routine Local</option>
+                                <option Value="Routine General" {{$category == 'Routine General' ? 'selected':''}}>Routine General</option>
+                                <option Value="Casuality Local" {{$category == 'Casuality Local' ? 'selected':''}}>Casuality Local</option>
+                                <option Value="Casuality General" {{$category == 'Casuality General' ? 'selected':''}}>Casuality General</option>
                             </select>
                             <div class="invalid-feedback">Please select a surgery category.</div>
                         </div>
@@ -47,7 +47,7 @@
                             <div class="invalid-feedback">Please Enter the Surgery Date.</div>
                         </div>
                         <div class="form-group col-md-4" style="margin-top:24px">
-                            <button type="submit" class="btn btn-success">Submit</button>
+                            <button type="submit" class="btn btn-success">Search</button>
                         </div>
                     </form>
                 </div>
@@ -73,7 +73,7 @@
                             <input type="hidden" name="surgeryDate" value="{{ $surgeryDate }}">
                             {{--<input type="hidden" name="consultant" value="{{ $consultant }}">--}}
                             <input type="hidden" name="category" value="{{ $category }}">
-                            <button type="submit" class="btn btn-primary">Print</button>
+                            <button type="submit" class="btn btn-primary">Print the List of Operations</button>
                         </div>
                     </form>
                 </div>
