@@ -192,7 +192,7 @@
 
 @section('scripts')
 
-<script>
+<!-- <script>
     document.getElementById('search-button').addEventListener('click', function() {
         var searchTerm = document.getElementById('search-box').value;
 
@@ -223,7 +223,53 @@
                 console.error('Error:', error.message);
             });
     });
+</script> -->
+
+<script>
+    document.getElementById('search-button').addEventListener('click', function() {
+        var searchTerm = document.getElementById('search-box').value;
+        var searchButton = document.getElementById('search-button');
+        var originalButtonText = searchButton.textContent;
+
+        // Show loading text or spinner
+        searchButton.textContent = 'Loading...';
+        searchButton.disabled = true;
+
+        fetch('{{ route("patient.search") }}?search-term=' + encodeURIComponent(searchTerm))
+            .then(response => response.json())
+            .then(data => {
+                var resultContainer = document.getElementById('search-result');
+                if (data.message) {
+                    resultContainer.textContent = data.message;
+
+                    // Assigning values
+                    $("#id").val(0);
+                    $("#category").val('').trigger('change');
+                    $("#patient").val('');
+                    $("#surgery").val('').trigger('change');
+                    $("#surgery_date").val('');
+                    // $("#prefix").val('');
+                    $("#full_name").val('');
+                    $("#gender").val('');
+                    $("#age").val('');
+                    $("#ward").val('');
+                    $("#BHTClinicFileNo").val('');
+                    $("#diagnosis").val('');
+                } else {
+                    resultContainer.textContent = '';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error.message);
+            })
+            .finally(() => {
+                // Hide loading text or spinner
+                searchButton.textContent = originalButtonText;
+                searchButton.disabled = false;
+            });
+    });
 </script>
+
 
 <script>
     function calculateAge(dateOfBirth) {
